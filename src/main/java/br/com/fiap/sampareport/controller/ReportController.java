@@ -33,7 +33,7 @@ public class ReportController {
                 .buildAndExpand(criado.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(criado); // HTTP 201 Created
+        return ResponseEntity.created(location).body(criado);
     }
 
     @GetMapping
@@ -55,7 +55,7 @@ public class ReportController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) throws SQLException {
         reportBO.remover(id);
-        return ResponseEntity.noContent().build(); // HTTP 204 No Content
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/upvote")
@@ -128,7 +128,7 @@ public class ReportController {
                 .build()
                 .toUri();
 
-        return ResponseEntity.created(location).body(criada); // HTTP 201 Created
+        return ResponseEntity.created(location).body(criada);
     }
 
     @GetMapping("/{id}/grade")

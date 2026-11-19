@@ -41,7 +41,6 @@ public class ComentarioDAO {
     }
 
     public List<ComentarioResponseDTO> buscarPorReportId(Long reportId) throws SQLException {
-        // implementei um ajuste no código para buscar o nome do usuário que fez o comentário, utilizando o UsuarioDAO
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.connectionFactory);
         List<Comentario> comentariosRecebidos = new ArrayList<>();
         List<ComentarioResponseDTO> comentarios = new ArrayList<>();

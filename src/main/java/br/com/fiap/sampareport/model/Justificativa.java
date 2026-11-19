@@ -11,7 +11,6 @@ public class Justificativa {
     private Long adminId;
     private Long reportId;
 
-    // 1. Construtor vazio
     public Justificativa() {
     }
 

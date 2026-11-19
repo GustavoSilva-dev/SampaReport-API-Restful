@@ -15,7 +15,6 @@ public class Report {
     private Integer quantidadeUpvotes;
     private LocalDateTime dataCriacao;
     
-    // Chave Estrangeira (FK): guarda o ID do cidadão que criou a denúncia (CD_USUARIO)
     private Long usuarioId;
 
     public Report() {

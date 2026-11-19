@@ -15,7 +15,6 @@ public class Usuario {
     public Usuario() {
     }
 
-    // Construtor Completo
     public Usuario(Long id, String nome, String email, String senha, RoleType perfil, LocalDateTime dataCriacao) {
         this.id = id;
         this.nome = nome;
