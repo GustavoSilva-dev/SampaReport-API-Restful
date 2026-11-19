@@ -136,7 +136,7 @@ public class ReportBO {
     }
 
     public List<ReportHistory> listarHistorico(Long reportId) throws SQLException {
-        buscarPorId(reportId); // Garante 404 se o report não existir
+        buscarPorId(reportId);
         return reportHistoryDAO.buscarPorReportId(reportId);
     }
 

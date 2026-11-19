@@ -42,7 +42,6 @@ public class JustificativaDAO {
         }
     }
 
-    // 2. READ BY REPORT (Busca a justificativa vinculada a um chamado específico)
     public Optional<Justificativa> buscarPorReportId(Long reportId) throws SQLException {
         String sql = "SELECT * FROM T_SR_JUSTIFY WHERE CD_REPORT = ?";
 

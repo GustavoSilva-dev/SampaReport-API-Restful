@@ -34,7 +34,7 @@ public class ReportDAO {
             ps.setDouble(4, report.getLatitude());
             ps.setDouble(5, report.getLongitude());
             ps.setString(6, report.getFotoAntesUrl());
-            ps.setString(7, ReportStatus.PENDENTE_COMUNIDADE.name()); // Sempre nasce pendente
+            ps.setString(7, ReportStatus.PENDENTE_COMUNIDADE.name());
             ps.setLong(8, report.getUsuarioId());
 
             ps.executeUpdate();
@@ -171,7 +171,6 @@ public class ReportDAO {
         );
     }
 
-    // metodo para listar todos os reports que um usuário deu upvote
     public List<Report> listarUpvotesPorUsuario(Long id) {
         List<Report> reports = new ArrayList<>();
         String sql = "SELECT r.* FROM T_SR_REPORT r " +
