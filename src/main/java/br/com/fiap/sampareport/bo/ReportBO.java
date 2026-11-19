@@ -149,7 +149,7 @@ public class ReportBO {
         return comentarioDAO.inserir(comentario);
     }
 
-    public List<Comentario> listarComentarios(Long reportId) throws SQLException {
+    public List<ComentarioResponseDTO> listarComentarios(Long reportId) throws SQLException {
         buscarPorId(reportId);
         return comentarioDAO.buscarPorReportId(reportId);
     }
@@ -216,5 +216,24 @@ public class ReportBO {
 
     public Map<String, Object> obterMetricasGerais() throws SQLException {
         return avaliacaoDAO.obterMetricasGerais();
+    }
+
+    public List<Report> listarUpvotesPorUsuario(Long id) throws SQLException {
+        try {
+            usuarioDAO.buscarPorId(id)
+                    .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado com ID: " + id));
+
+            return reportDAO.listarUpvotesPorUsuario(id);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar upvotes do usuário: " + e.getMessage(), e);
+        }
+    }
+
+    public List<Justificativa> listarJustificativas() {
+        return justificativaDAO.listarTodos();
+    }
+
+    public List<Avaliacao> listarAvaliacoes() {
+        return avaliacaoDAO.listarTodos();
     }
 }

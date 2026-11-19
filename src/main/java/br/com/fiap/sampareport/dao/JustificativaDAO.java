@@ -1,19 +1,21 @@
 package br.com.fiap.sampareport.dao;
 
 import br.com.fiap.sampareport.model.Justificativa;
+import br.com.fiap.sampareport.config.ConnectionFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class JustificativaDAO {
 
-    private final DataSource dataSource;
+    private final ConnectionFactory connectionFactory;
 
-    public JustificativaDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public JustificativaDAO(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
     }
 
     public Justificativa inserir(Justificativa justificativa) throws SQLException {
@@ -21,7 +23,7 @@ public class JustificativaDAO {
                      "DT_CONCLUSAO, CD_ADMIN, CD_REPORT) " +
                      "VALUES (SQ_SR_JUSTIFY.NEXTVAL, ?, ?, SYSTIMESTAMP, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, new String[]{"CD_JUSTIFICATIVA"})) {
 
             ps.setString(1, justificativa.getFotoDepoisUrl());
@@ -44,7 +46,7 @@ public class JustificativaDAO {
     public Optional<Justificativa> buscarPorReportId(Long reportId) throws SQLException {
         String sql = "SELECT * FROM T_SR_JUSTIFY WHERE CD_REPORT = ?";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, reportId);
@@ -68,5 +70,22 @@ public class JustificativaDAO {
                 rs.getLong("CD_ADMIN"),
                 rs.getLong("CD_REPORT")
         );
+    }
+
+    public List<Justificativa> listarTodos() {
+        String sql = "SELECT * FROM T_SR_JUSTIFY ORDER BY DT_CONCLUSAO DESC";
+        List<Justificativa> justificativas = new ArrayList<>();
+
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                justificativas.add(mapearJustificativa(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar justificativas: " + e.getMessage(), e);
+        }
+        return justificativas;
     }
 }

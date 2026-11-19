@@ -1,9 +1,9 @@
 package br.com.fiap.sampareport.dao;
 
 import br.com.fiap.sampareport.model.Upvote;
+import br.com.fiap.sampareport.config.ConnectionFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,17 +12,17 @@ import java.sql.SQLException;
 @Repository
 public class UpvoteDAO {
 
-    private final DataSource dataSource;
+    private final ConnectionFactory connectionFactory;
 
-    public UpvoteDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public UpvoteDAO(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
     }
 
 
     public boolean jaVotou(Long usuarioId, Long reportId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM T_SR_UPVOTE WHERE CD_USUARIO = ? AND CD_REPORT = ?";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, usuarioId);
@@ -41,7 +41,7 @@ public class UpvoteDAO {
     public void inserir(Upvote upvote) throws SQLException {
         String sql = "INSERT INTO T_SR_UPVOTE (CD_USUARIO, CD_REPORT, DT_VOTO) VALUES (?, ?, SYSTIMESTAMP)";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, upvote.getUsuarioId());
@@ -54,7 +54,7 @@ public class UpvoteDAO {
     public boolean remover(Long usuarioId, Long reportId) throws SQLException {
         String sql = "DELETE FROM T_SR_UPVOTE WHERE CD_USUARIO = ? AND CD_REPORT = ?";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, usuarioId);

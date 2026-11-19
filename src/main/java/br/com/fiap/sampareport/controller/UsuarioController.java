@@ -15,9 +15,7 @@ import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 
-// @RestController avisa ao Spring que esta classe expõe endpoints REST e converte os retornos para JSON
 @RestController
-// @RequestMapping define o endereço base de todas as rotas desta classe
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
@@ -57,6 +55,12 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDTO>> listarTodos() throws SQLException {
         return ResponseEntity.ok(usuarioBO.listarTodos());
+    }
+
+    // GET /api/usuarios/{id}/upvotes -> Lista todos os upvotes do usuário
+    @GetMapping("/{id}/upvotes")
+    public ResponseEntity<List<Report>> listarUpvotesDoUsuario(@PathVariable Long id) throws SQLException {
+        return ResponseEntity.ok(reportBO.listarUpvotesPorUsuario(id));
     }
 
     // GET /api/usuarios/{id} -> Busca um usuário específico pelo ID

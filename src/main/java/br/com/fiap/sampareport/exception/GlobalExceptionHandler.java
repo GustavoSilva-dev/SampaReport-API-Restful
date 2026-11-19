@@ -80,17 +80,4 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
     }
-
-    @ExceptionHandler(SQLException.class)
-    public ResponseEntity<ErroPadrao>handleSQLException(SQLException ex, HttpServletRequest request) {
-        ex.printStackTrace();
-        ErroPadrao erro = new ErroPadrao(
-                LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Erro de banco de dados",
-                "Erro ao comunicar com o banco Oracle: " + ex.getMessage(),
-                request.getRequestURI()
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
-    }
 }

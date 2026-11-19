@@ -85,11 +85,11 @@ public class ReportController {
     }
 
     @GetMapping("/{id}/comments")
-    public ResponseEntity<List<Comentario>> listarComentarios(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<List<ComentarioResponseDTO>> listarComentarios(@PathVariable Long id) throws SQLException {
         return ResponseEntity.ok(reportBO.listarComentarios(id));
     }
 
-    @PutMapping("/{id}/status")
+    @PatchMapping("/{id}/status")
     public ResponseEntity<Report> atualizarStatus(@PathVariable Long id,
                                                   @RequestBody @Valid StatusUpdateDTO dto) throws SQLException {
         return ResponseEntity.ok(reportBO.atualizarStatus(id, dto));
@@ -113,6 +113,11 @@ public class ReportController {
         return ResponseEntity.ok(reportBO.buscarJustificativa(id));
     }
 
+    @GetMapping("/justify")
+    public ResponseEntity<List<Justificativa>> listarJustificativas() throws SQLException {
+        return ResponseEntity.ok(reportBO.listarJustificativas());
+    }
+
     @PostMapping("/{id}/grade")
     public ResponseEntity<Avaliacao> avaliarReport(@PathVariable Long id,
                                                    @RequestBody @Valid AvaliacaoRequestDTO dto) throws SQLException {
@@ -129,5 +134,10 @@ public class ReportController {
     @GetMapping("/{id}/grade")
     public ResponseEntity<Avaliacao> buscarAvaliacao(@PathVariable Long id) throws SQLException {
         return ResponseEntity.ok(reportBO.buscarAvaliacao(id));
+    }
+
+    @GetMapping("/grade")
+    public ResponseEntity<List<Avaliacao>> listarAvaliacoes() throws SQLException {
+        return ResponseEntity.ok(reportBO.listarAvaliacoes());
     }
 }

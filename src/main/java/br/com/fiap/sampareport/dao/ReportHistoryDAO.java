@@ -2,9 +2,9 @@ package br.com.fiap.sampareport.dao;
 
 import br.com.fiap.sampareport.model.ReportHistory;
 import br.com.fiap.sampareport.model.ReportStatus;
+import br.com.fiap.sampareport.config.ConnectionFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +12,17 @@ import java.util.List;
 @Repository
 public class ReportHistoryDAO {
 
-    private final DataSource dataSource;
+    private final ConnectionFactory connectionFactory;
 
-    public ReportHistoryDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public ReportHistoryDAO(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
     }
 
     public void inserir(ReportHistory history) throws SQLException {
         String sql = "INSERT INTO T_SR_REPORT_HISTORY (CD_HISTORICO, CD_REPORT, ST_ANTERIOR, ST_NOVO, DT_ALTERACAO) " +
                      "VALUES (SQ_SR_REPORT_HISTORY.NEXTVAL, ?, ?, ?, SYSTIMESTAMP)";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, history.getReportId());
@@ -43,7 +43,7 @@ public class ReportHistoryDAO {
         List<ReportHistory> historico = new ArrayList<>();
         String sql = "SELECT * FROM T_SR_REPORT_HISTORY WHERE CD_REPORT = ? ORDER BY DT_ALTERACAO DESC";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, reportId);
